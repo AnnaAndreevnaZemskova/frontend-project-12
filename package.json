@@ -4,9 +4,12 @@
   "description": "[![Actions Status](https://github.com/AnnaAndreevnaZemskova/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/AnnaAndreevnaZemskova/frontend-project-12/actions)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm install"
   },
-  "author": "",
+  "author": "Anna Zemskova",
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4"
