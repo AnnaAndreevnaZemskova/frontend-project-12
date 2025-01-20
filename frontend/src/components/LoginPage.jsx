@@ -3,18 +3,19 @@ import { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import routes from '../routes.js';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     Container, Row, Col, Card,
-    Form, Button, FloatingLabel, Image,
+    Form, Button, Image,
 } from 'react-bootstrap';
+import useAuth from '../hooks/index.jsx';
 
 
 const LoginPage = () => {
+    const auth = useAuth();
     const [authFailed, setAuthFailed] = useState(false);
     const inputRef = useRef();
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
         inputRef.current.focus();
@@ -25,23 +26,24 @@ const LoginPage = () => {
             username: '',
             password: '',
         },
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             setAuthFailed(false);
 
-            axios.post(routes.loginPath(), values)
-                .then((data) => {
-                    console.log('data: ', data);
-                    localStorage.setItem('userId', JSON.stringify(data));
-                    const { from } = location.state;
-                    navigate(from);
-                })
-                .catch((error) => {
-                    formik.setSubmitting(false);
+            try {
+                const res = await axios.post(routes.loginPath(), values);
+                localStorage.setItem('user', JSON.stringify(res.data));
+                auth.logIn();
+                navigate('/');
+            } catch (err) {
+                formik.setSubmitting(false);
+                if (err.isAxiosError && err.response.status === 401) {
                     setAuthFailed(true);
-                    console.log('error: ', error);
-                })
-
-        }
+                    inputRef.current.select();
+                    return;
+                }
+                throw err;
+            }
+        },
     });
 
     return (
@@ -55,12 +57,10 @@ const LoginPage = () => {
                             </Col>
                             <Form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
                                 <h1 className="text-center mb-4">Войти</h1>
-                                <FloatingLabel
-                                    controlId="username"
-                                    label="Ваш ник"
-                                    className="mb-3"
-                                >
+                                <Form.Floating className="mb-3">
                                     <Form.Control
+                                        type="username"
+                                        id="username"
                                         onChange={formik.handleChange}
                                         values={formik.values.username}
                                         placeholder="Ваш ник"
@@ -70,16 +70,14 @@ const LoginPage = () => {
                                         required
                                         isInvalid={authFailed}
                                     />
-                                </FloatingLabel>
+                                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                                </Form.Floating>
 
-                                <FloatingLabel
-                                    controlId="password"
-                                    label="Пароль"
-                                    className="mb-4"
-                                >
+                                <Form.Floating className="mb-4">
                                     <Form.Control
                                         onChange={formik.handleChange}
                                         values={formik.values.password}
+                                        id="password"
                                         type="password"
                                         placeholder="Пароль"
                                         name="password"
@@ -87,10 +85,9 @@ const LoginPage = () => {
                                         required
                                         isInvalid={authFailed}
                                     />
-                                </FloatingLabel>
-
-                                <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
-
+                                    <Form.Label htmlFor="password" className="mb-4">Пароль</Form.Label>
+                                    <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                                </Form.Floating>
                                 <Button variant="outline-primary" type="submit" className="w-100 mb-3">
                                     Войти
                                 </Button>
