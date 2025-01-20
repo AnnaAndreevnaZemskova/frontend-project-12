@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "start": "npx start-server -s ./dist",
+    "start": "npx start-server -s ./frontend/dist",
     "build": "vite build",
     "serve": "vite preview"
   },
