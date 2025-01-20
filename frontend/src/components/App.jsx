@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Navbar, Container, Button } from "react-bootstrap";
 import LoginPage from "./LoginPage";
@@ -8,15 +8,27 @@ import SignUpPage from "./SignUpPage";
 import AuthContext from '../contexts/AuthContext';
 import useAuth from '../hooks/index.jsx';
 import HomePage from './HomePage.jsx';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../services/authSlice.js';
 
 const AuthProvider = ({ children }) => {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const hasToken = !!localStorage.getItem('token');
+    const [loggedIn, setLoggedIn] = useState(hasToken);
+    const dispatch = useDispatch();
 
     const logIn = () => setLoggedIn(true);
     const logOut = () => {
-        localStorage.removeItem('user');
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        dispatch(logoutUser());
         setLoggedIn(false);
     };
+
+    useEffect(() => {
+        const user = localStorage.getItem('username');
+        const token = localStorage.getItem('token');
+        user && token ? logIn() : logOut();
+    }, []);
 
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>

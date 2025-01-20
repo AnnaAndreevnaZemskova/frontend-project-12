@@ -9,6 +9,8 @@ import {
     Form, Button, Image,
 } from 'react-bootstrap';
 import useAuth from '../hooks/index.jsx';
+import { loginUser } from '../services/authSlice.js';
+import { useDispatch } from 'react-redux';
 
 
 const LoginPage = () => {
@@ -16,6 +18,7 @@ const LoginPage = () => {
     const [authFailed, setAuthFailed] = useState(false);
     const inputRef = useRef();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         inputRef.current.focus();
@@ -31,7 +34,9 @@ const LoginPage = () => {
 
             try {
                 const res = await axios.post(routes.loginPath(), values);
-                localStorage.setItem('user', JSON.stringify(res.data));
+                localStorage.setItem('token', JSON.stringify(res.data.token));
+                localStorage.setItem('username', JSON.stringify(res.data.username));
+                dispatch(loginUser(res.data))
                 auth.logIn();
                 navigate('/');
             } catch (err) {
