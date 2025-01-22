@@ -12,8 +12,7 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(removeChannel, (state, { payload }) => {
-      const channelId = payload;
-      const restEntities = Object.values(state.entities).filter((e) => e.id !== channelId);
+      const restEntities = Object.values(state.entities).filter((e) => e.channelId !== payload);
       messagesAdapter.setAll(state, restEntities);
     });
   },
