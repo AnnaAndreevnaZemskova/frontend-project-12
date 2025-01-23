@@ -4,7 +4,7 @@ export default {
         ru: "Русский",
       },
       navbar: {
-        homeLink: "Chat (Slack)",
+        homeLink: "Hexlet Chat",
         logOutButton: "Выйти",
       },
       loginAndSignUp: {
@@ -37,10 +37,10 @@ export default {
         rename: "Переименовать",
         addChannel: "+",
         messageCount: {
-          keyWithCount_one: "{{count}} сообщение",
-          keyWithCount_few: "{{count}} сообщения",
-          keyWithCount_many: "{{count}} сообщений",
-          keyWithCount_other: "{{count}} сообщений",
+          keyWithCount_one: "{{count}} сообщение", // 1
+          keyWithCount_few: "{{count}} сообщения", // для 2-4
+          keyWithCount_many: "{{count}} сообщений", // для 5 и больше
+          keyWithCount_other: "{{count}} сообщений", // 0, 5...
         },
         sendMessageBtn: "Отправить",
         inputMessage: "Введите сообщение...",
@@ -73,6 +73,13 @@ export default {
             unique: "Должно быть уникальным",
           },
         },
+      },
+      toasts: {
+        createChannel: 'Канал создан',
+        removeChannel: 'Канал удалён',
+        renameChannel: 'Канал переименован',
+        fetchError: 'Ошибка сети',
+        otherError: 'Ошибка в загрузке данных',
       },
     },
   };

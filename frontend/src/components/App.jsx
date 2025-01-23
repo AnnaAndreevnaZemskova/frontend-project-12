@@ -16,6 +16,8 @@ import { addMessage } from '../services/messagesSlice.js'
 import resources from '../locales/index.js';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const AuthProvider = ({ children }) => {
     const hasToken = !!localStorage.getItem('token');
@@ -62,12 +64,12 @@ const AuthButton = () => {
 
 const App = () => {
     i18next
-        .use(initReactI18next) // передаем экземпляр i18n в react-i18next, который сделает его доступным для всех компонентов через context API.
+        .use(initReactI18next)
         .init({
-            resources, // передаем переводы текстов интерфейса в формате JSON
-            fallbackLng: 'ru', // если переводы на языке пользователя недоступны, то будет использоваться язык, указанный в этом поле
+            resources,
+            fallbackLng: 'ru',
             interpolation: {
-                escapeValue: false, // экранирование уже есть в React, поэтому отключаем
+                escapeValue: false,
             },
         });
 
@@ -76,20 +78,17 @@ const App = () => {
 
     useEffect(() => {
         socket.on('newMessage', (payload) => {
-            console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+            console.log(payload);
             dispatch(addMessage(payload));
         });
         socket.on('newChannel', (payload) => {
-            console.log(payload) // { id: 6, name: "new channel", removable: true }
+            console.log(payload);
             dispatch(addChannel(payload));
         });
         socket.on('removeChannel', (payload) => {
             console.log(payload); // { id: 6 };
             dispatch(removeChannel(payload));
         });
-        // socket.on('renameChannel', (payload) => {
-        //     console.log(payload); // { id: 7, name: "new name channel", removable: true }
-        // });
 
         return () => {
             socket.off('newMessage');
@@ -125,7 +124,7 @@ const App = () => {
                     </Routes>
                 </Router>
             </div>
-            <div className="Toastify"></div>
+            <ToastContainer closeOnClick />
         </AuthProvider>
     );
 }
