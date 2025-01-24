@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import routes from "../routes.js";
 import { useTranslation } from "react-i18next";
+import filter from 'leo-profanity';
 
 const MessageBox = ({ messages, currentChannelId }) => {
     const dispatch = useDispatch();
@@ -36,10 +37,6 @@ const MessageBox = ({ messages, currentChannelId }) => {
                 formik.resetForm();
             } catch (err) {
                 formik.setSubmitting(false);
-                // if (err.isAxiosError && err.response.status === 401) {
-                //     inputRef.current.select();
-                //     return;
-                // }
                 throw err;
             }
         },
@@ -49,7 +46,7 @@ const MessageBox = ({ messages, currentChannelId }) => {
         messages.length > 0 && messages
             .filter((message) => message.channelId === currentChannelId)
             .map((message) => (
-                <div key={message.id} className="text-break mb-2"><b>{message.username}</b>: {message.body}</div>
+                <div key={message.id} className="text-break mb-2"><b>{message.username}</b>: {filter.clean(message.body)}</div>
             ))
     );
 
