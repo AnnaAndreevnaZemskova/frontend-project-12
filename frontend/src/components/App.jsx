@@ -17,7 +17,7 @@ import resources from '../locales/index.js';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
