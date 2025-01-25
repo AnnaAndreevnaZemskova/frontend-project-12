@@ -17,8 +17,14 @@ import resources from '../locales/index.js';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import filter from 'leo-profanity';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+
+const rollbarConfig = {
+    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    environment: 'testenv',
+};
 
 filter.clearList();
 filter.add(filter.getDictionary('en'));
@@ -45,7 +51,11 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-            {children}
+            <Provider config={rollbarConfig}>
+                <ErrorBoundary>
+                    {children}
+                </ErrorBoundary>
+            </Provider>
         </AuthContext.Provider>
     );
 };
@@ -90,9 +100,9 @@ const App = () => {
             dispatch(addChannel(payload));
         });
         socket.on('removeChannel', (payload) => {
-            console.log(payload.id);
+            console.log(payload.id); // { id: 6 };
             console.log('defaultChannelId: ', defaultChannelId)
-            dispatch(setCurrentChannel(defaultChannelId));
+            dispatch(setCurrentChannel(defaultChannelId)); // показывается пустой канал, если удалить в другом браузере 
             dispatch(removeChannel(payload.id));
 
         });
