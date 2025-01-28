@@ -54,6 +54,7 @@ const AuthProvider = ({ children }) => {
         user && token ? logIn() : logOut();
     }, []);
  
+    
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
             <Provider config={rollbarConfig}>
