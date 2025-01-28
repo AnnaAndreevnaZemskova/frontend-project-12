@@ -26,6 +26,11 @@ const rollbarConfig = {
     environment: 'testenv',
 };
 
+function TestError() {
+    const a = null;
+    return a.hello();
+  }
+
 filter.clearList();
 filter.add(filter.getDictionary('en'));
 filter.add(filter.getDictionary('ru'));
@@ -53,6 +58,7 @@ const AuthProvider = ({ children }) => {
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
             <Provider config={rollbarConfig}>
                 <ErrorBoundary>
+                    <TestError />
                     {children}
                 </ErrorBoundary>
             </Provider>
