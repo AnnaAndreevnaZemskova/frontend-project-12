@@ -53,13 +53,12 @@ const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         user && token ? logIn() : logOut();
     }, []);
-
+// {children}
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
             <Provider config={rollbarConfig}>
                 <ErrorBoundary>
                     <TestError />
-                    {children}
                 </ErrorBoundary>
             </Provider>
         </AuthContext.Provider>
