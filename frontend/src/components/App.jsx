@@ -22,7 +22,7 @@ import filter from 'leo-profanity';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
-    accessToken: import.meta.env.REACT_APP_VITE_ROLLBAR_ACCESS_TOKEN,
+    accessToken: '2f39b3a808dd4a218ef81b36ad4b71ed',
     environment: 'testenv',
 };
 
@@ -54,12 +54,12 @@ const AuthProvider = ({ children }) => {
         user && token ? logIn() : logOut();
     }, []);
  
-    
+         //           {children}
+
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
             <Provider config={rollbarConfig}>
                 <ErrorBoundary>
-                    {children}
                     <TestError />
                 </ErrorBoundary>
             </Provider>
