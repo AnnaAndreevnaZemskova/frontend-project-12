@@ -22,7 +22,7 @@ import filter from 'leo-profanity';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
-    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    accessToken: '05d4141635714f4bb6775d976b81aa75',
     environment: 'testenv',
 };
 
@@ -100,9 +100,9 @@ const App = () => {
             dispatch(addChannel(payload));
         });
         socket.on('removeChannel', (payload) => {
-            console.log(payload.id); // { id: 6 };
+            console.log(payload.id);
             console.log('defaultChannelId: ', defaultChannelId)
-            dispatch(setCurrentChannel(defaultChannelId)); // показывается пустой канал, если удалить в другом браузере 
+            dispatch(setCurrentChannel(defaultChannelId));
             dispatch(removeChannel(payload.id));
 
         });
