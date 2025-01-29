@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
 
 export const channelsApi = createApi({
   reducerPath: "channels",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/channels" }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1/channels' }),
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => "",

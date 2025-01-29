@@ -22,7 +22,6 @@ const Rename = ({ onHide, currentChannelId }) => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        // Используем setTimeout, чтобы гарантировать, что элемент полностью смонтирован
         setTimeout(() => {
             inputRef.current && inputRef.current.select();
         }, 0);
@@ -36,7 +35,6 @@ const Rename = ({ onHide, currentChannelId }) => {
             .notOneOf(channels.map((channel) => channel.name), t('modal.errors.validation.unique'))
     });
 
-
     const formik = useFormik({
         initialValues: {
             name: currentChannel.name,
@@ -49,7 +47,7 @@ const Rename = ({ onHide, currentChannelId }) => {
             try {
                 nostifySuccess();
                 const newChannel = { changes: { name: values.name }, id: currentChannelId };
-                await axios.patch(routes.channelPath(currentChannelId), values, { headers: getAuthHeader() })
+                await axios.patch(routes.channelPath(currentChannelId), values, { headers: getAuthHeader() });
                 dispatch(updateChannel(newChannel));
                 onHide();
             } catch (err) {

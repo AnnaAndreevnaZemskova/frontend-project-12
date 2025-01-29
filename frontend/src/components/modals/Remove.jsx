@@ -16,7 +16,6 @@ const Remove = ({ onHide, currentChannelId, setCurrentChannelId, modalInfo: { it
     const dispatch = useDispatch();
     const defaultChannelId = useSelector((state) => state.ui.defaultChannelId);
     const { t } = useTranslation();
-
     const notify = () => toast.success(t('toasts.removeChannel'));
     const notifyError = (type) => {
         switch (type) {
@@ -40,7 +39,6 @@ const Remove = ({ onHide, currentChannelId, setCurrentChannelId, modalInfo: { it
             console.log('err: ', err);
             notifyError(err.status);
         }
-
         onHide();
     };
 

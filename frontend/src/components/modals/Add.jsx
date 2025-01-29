@@ -1,11 +1,11 @@
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useEffect, useRef } from "react";
-import { addChannel } from "../../services/channelsSlice";
-import { setCurrentChannel } from "../../services/uiSlice";
-import axios from "axios";
-import routes from "../../routes";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from 'react';
+import { addChannel } from '../../services/channelsSlice';
+import { setCurrentChannel } from '../../services/uiSlice';
+import axios from 'axios';
+import routes from '../../routes';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectors as channelsSelectors } from '../../services/channelsSlice.js'
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -55,10 +55,8 @@ const Add = ({ onHide, setCurrentChannelId }) => {
                 setCurrentChannelId(data.id);
                 dispatch(addChannel(data));
                 dispatch(setCurrentChannel(data.id));
-
             } catch (err) {
                 formik.setSubmitting(false);
-                
                 notifyError(err.status);
                 console.log('err: ', err);
                 throw err;

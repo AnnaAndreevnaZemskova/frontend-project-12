@@ -31,7 +31,6 @@ const LoginPage = () => {
         },
         onSubmit: async (values) => {
             setAuthFailed(false);
-
             try {
                 const res = await axios.post(routes.loginPath(), values);
                 localStorage.setItem('token', JSON.stringify(res.data.token));

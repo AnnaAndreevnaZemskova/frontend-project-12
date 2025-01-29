@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Row, Col, Nav, Dropdown, ButtonGroup } from 'react-bootstrap';
 import MessageBox from './MessageBox.jsx';
 import routes from '../routes.js';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { selectors as channelsSelectors, addChannels } from '../services/channelsSlice.js'
 import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js'
 import { setCurrentChannel } from '../services/uiSlice.js';
@@ -32,7 +32,6 @@ const HomePage = () => {
         if (!modalInfo.type) {
             return null;
         }
-
         const Component = getModal(modalInfo.type);
         return <Component
             modalInfo={modalInfo}
@@ -47,7 +46,6 @@ const HomePage = () => {
             const { data } = await axios.get(routes.channelsPath(), { headers: getAuthHeader() });
             dispatch(addChannels(data));
         };
-
         fetchChannels();
     }, [dispatch]);
 
@@ -56,7 +54,6 @@ const HomePage = () => {
             const { data } = await axios.get(routes.messagesPath(), { headers: getAuthHeader() });
             dispatch(addMessages(data));
         };
-
         fetchMessages();
     }, [dispatch]);
 
@@ -90,7 +87,6 @@ const HomePage = () => {
 
     const renderChannels = () => {
         if (channels.length === 0) null;
-
         return (
             channels.map((channel) => (
                 <Nav.Item key={channel.id} className="w-100" onClick={handleSetCurrentChannelId(channel.id)}>

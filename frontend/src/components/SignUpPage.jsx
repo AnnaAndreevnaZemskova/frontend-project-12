@@ -1,14 +1,14 @@
 import {
   Container, Card, Row, Col, Image,
   Form, Button
-} from "react-bootstrap";
-import axios from "axios";
-import { useFormik } from "formik";
-import routes from "../routes";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks";
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+} from 'react-bootstrap';
+import axios from 'axios';
+import { useFormik } from 'formik';
+import routes from '../routes';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks';
+import { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { loginUser } from '../services/authSlice.js';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -54,11 +54,9 @@ const SignUpPage = () => {
               navigate('/');
           } catch (err) {
               formik.setSubmitting(false);
-
               if (err.isAxiosError && err.response.status === 409) {
                   console.log(t('loginAndSignUp.errors.validation.status409'));
               }
-
               if (err.isAxiosError && err.response.status === 401) {
                   setAuthFailed(true);
                   inputRef.current.select();

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Navbar, Container, Button } from "react-bootstrap";
-import LoginPage from "./LoginPage";
-import NotFoundPage from "./NotFoundPage";
-import SignUpPage from "./SignUpPage";
+import LoginPage from './LoginPage';
+import NotFoundPage from './NotFoundPage';
+import SignUpPage from './SignUpPage';
 import AuthContext from '../contexts/AuthContext';
 import useAuth from '../hooks/index.jsx';
 import HomePage from './HomePage.jsx';
@@ -53,7 +53,6 @@ const AuthProvider = ({ children }) => {
 const PrivateRoute = ({ children }) => {
     const auth = useAuth();
     const location = useLocation();
-
     return (
         auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
     );
@@ -94,7 +93,6 @@ const App = () => {
             console.log('defaultChannelId: ', defaultChannelId)
             dispatch(setCurrentChannel(defaultChannelId));
             dispatch(removeChannel(payload.id));
-
         });
         socket.on('renameChannel', (payload) => {
             dispatch(updateChannel({ changes: { name: payload.name }, id: payload.id }))
