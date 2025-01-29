@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { Navbar, Container, Button } from 'react-bootstrap';
-import LoginPage from './LoginPage';
-import NotFoundPage from './NotFoundPage';
+import { Navbar, Container, Button } from "react-bootstrap";
+import LoginPage from "./LoginPage";
+import NotFoundPage from "./NotFoundPage";
 import SignUpPage from "./SignUpPage";
 import AuthContext from '../contexts/AuthContext';
 import useAuth from '../hooks/index.jsx';
@@ -19,12 +19,6 @@ import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
-import { Provider, ErrorBoundary } from '@rollbar/react';
-
-const rollbarConfig = {
-    accessToken: '2f39b3a808dd4a218ef81b36ad4b71ed',
-    environment: 'testenv',
-};
 
 filter.clearList();
 filter.add(filter.getDictionary('en'));
@@ -51,11 +45,7 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-            <Provider config={rollbarConfig}>
-                <ErrorBoundary>
-                    {children}
-                </ErrorBoundary>
-            </Provider>
+            {children}
         </AuthContext.Provider>
     );
 };
