@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Navbar, Container, Button } from "react-bootstrap";
-import LoginPage from './LoginPage';
-import NotFoundPage from './NotFoundPage';
-import SignUpPage from './SignUpPage';
+import LoginPage from "./LoginPage";
+import NotFoundPage from "./NotFoundPage";
+import SignUpPage from "./SignUpPage";
 import AuthContext from '../contexts/AuthContext';
 import useAuth from '../hooks/index.jsx';
 import HomePage from './HomePage.jsx';
@@ -19,6 +19,14 @@ import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+
+const rollbarConfig = {
+    accessToken: import.meta.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
+    environment: 'production',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+};
 
 filter.clearList();
 filter.add(filter.getDictionary('en'));
@@ -45,7 +53,11 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-            {children}
+            <Provider config={rollbarConfig}>
+                <ErrorBoundary>
+                    {children}
+                </ErrorBoundary>
+            </Provider>
         </AuthContext.Provider>
     );
 };
@@ -53,6 +65,7 @@ const AuthProvider = ({ children }) => {
 const PrivateRoute = ({ children }) => {
     const auth = useAuth();
     const location = useLocation();
+
     return (
         auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
     );
@@ -89,10 +102,11 @@ const App = () => {
             dispatch(addChannel(payload));
         });
         socket.on('removeChannel', (payload) => {
-            console.log(payload.id);
+            console.log(payload.id); // { id: 6 };
             console.log('defaultChannelId: ', defaultChannelId)
-            dispatch(setCurrentChannel(defaultChannelId));
+            dispatch(setCurrentChannel(defaultChannelId)); // показывается пустой канал, если удалить в другом браузере 
             dispatch(removeChannel(payload.id));
+
         });
         socket.on('renameChannel', (payload) => {
             dispatch(updateChannel({ changes: { name: payload.name }, id: payload.id }))
