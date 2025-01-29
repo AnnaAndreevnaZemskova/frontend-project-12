@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   defaultChannelId: "1",
@@ -16,4 +16,5 @@ const uiSlice = createSlice({
 });
 
 export const { setCurrentChannel } = uiSlice.actions;
+
 export default uiSlice.reducer;

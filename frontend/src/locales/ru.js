@@ -37,10 +37,10 @@ export default {
         rename: "Переименовать",
         addChannel: "+",
         messageCount: {
-          keyWithCount_one: "{{count}} сообщение", // 1
-          keyWithCount_few: "{{count}} сообщения", // для 2-4
-          keyWithCount_many: "{{count}} сообщений", // для 5 и больше
-          keyWithCount_other: "{{count}} сообщений", // 0, 5...
+          keyWithCount_one: "{{count}} сообщение",
+          keyWithCount_few: "{{count}} сообщения",
+          keyWithCount_many: "{{count}} сообщений",
+          keyWithCount_other: "{{count}} сообщений",
         },
         sendMessageBtn: "Отправить",
         inputMessage: "Введите сообщение...",
@@ -49,7 +49,7 @@ export default {
       notFoundPage: {
         heading: "Страница не найдена",
         body: "Но вы можете перейти ",
-        homeLink: "на главную страницу",
+        homeLink: "На главную страницу",
       },
       modal: {
         submitBtn: "Отправить",
@@ -75,11 +75,11 @@ export default {
         },
       },
       toasts: {
-        createChannel: 'Канал создан',
-        removeChannel: 'Канал удалён',
-        renameChannel: 'Канал переименован',
-        fetchError: 'Ошибка сети',
-        otherError: 'Ошибка в загрузке данных',
+        createChannel: "Канал создан",
+        removeChannel: "Канал удалён",
+        renameChannel: "Канал переименован",
+        fetchError: "Ошибка сети",
+        otherError: "Ошибка в загрузке данных",
       },
     },
   };
