@@ -23,7 +23,7 @@ import {
   import { setCurrentChannel } from '../services/uiSlice.js';
   import socket from '../socket.js';
   import resources from '../locales/index.js';
-  import 'react-toastify/dist/ReactToastify.min.css';
+  import 'react-toastify/dist/ReactToastify.css';
   
   const rollbarConfig = {
     accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
