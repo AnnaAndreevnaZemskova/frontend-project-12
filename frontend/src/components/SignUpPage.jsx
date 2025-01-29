@@ -21,83 +21,83 @@ const SignUpPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-      inputRef.current.focus();
+    inputRef.current.focus();
   }, []);
 
   const signUpSchema = Yup.object().shape({
-      username: Yup.string()
-          .required(t('loginAndSignUp.errors.validation.required'))
-          .min(3, t('loginAndSignUp.errors.validation.nameSymbols'))
-          .max(20, t('loginAndSignUp.errors.validation.nameSymbols')),
-      password: Yup.string()
-          .required(t('loginAndSignUp.errors.validation.required'))
-          .min(6, t('loginAndSignUp.errors.validation.pasMinSymbols')),
-      confirmPassword: Yup.string()
-          .required(t('loginAndSignUp.errors.validation.required'))
-          .oneOf([Yup.ref('password')], t('loginAndSignUp.errors.validation.confirmPassword')),
+    username: Yup.string()
+     .required(t('loginAndSignUp.errors.validation.required'))
+      .min(3, t('loginAndSignUp.errors.validation.nameSymbols'))
+      .max(20, t('loginAndSignUp.errors.validation.nameSymbols')),
+    password: Yup.string()
+      .required(t('loginAndSignUp.errors.validation.required'))
+      .min(6, t('loginAndSignUp.errors.validation.pasMinSymbols')),
+    confirmPassword: Yup.string()
+      .required(t('loginAndSignUp.errors.validation.required'))
+      .oneOf([Yup.ref('password')], t('loginAndSignUp.errors.validation.confirmPassword')),
   });
 
   const formik = useFormik({
-      initialValues: {
-          username: '',
-          password: '',
-          confirmPassword: '',
-      },
-      validationSchema: signUpSchema,
-      onSubmit: async (values) => {
-          try {
-              const response = await axios.post(routes.signupPath(), values)
-              localStorage.setItem('token', JSON.stringify(response.data.token));
-              localStorage.setItem('username', JSON.stringify(response.data.username));
-              dispatch(loginUser(response.data))
-              auth.logIn();
-              navigate('/');
-          } catch (err) {
-              formik.setSubmitting(false);
-              if (err.isAxiosError && err.response.status === 409) {
-                  console.log(t('loginAndSignUp.errors.validation.status409'));
-              }
-              if (err.isAxiosError && err.response.status === 401) {
-                  setAuthFailed(true);
-                  inputRef.current.select();
-                  return;
-              }
-              throw err;
-          }
-      },
+    initialValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: signUpSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(routes.signupPath(), values)
+        localStorage.setItem('token', JSON.stringify(response.data.token));
+        localStorage.setItem('username', JSON.stringify(response.data.username));
+        dispatch(loginUser(response.data))
+        auth.logIn();
+        navigate('/');
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 409) {
+          console.log(t('loginAndSignUp.errors.validation.status409'));
+        }
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+          throw err;
+      }
+    },
   });
 
   return (
-      <Container fluid className="h-100">
-          <Row className="justify-content-center align-content-center h-100">
-              <Col xs={12} md={8} xxl={6}>
-                  <Card className="shadow-sm">
-                      <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                          <div>
-                              <Image alt="Регистрация" src="/images/signup-avatar.jpg" roundedCircle />
-                          </div>
-                          <Form className="w-50" onSubmit={formik.handleSubmit}>
-                              <h1 className="text-center mb-4">{t('loginAndSignUp.headingSignUp')}</h1>
-                              <Form.Floating className="mb-3">
-                                  <Form.Control
-                                      type="username"
-                                      id="username"
-                                      onChange={formik.handleChange}
-                                      name="username"
-                                      autoComplete="username"
-                                      value={formik.values.username}
-                                      placeholder={t('loginAndSignUp.usernameSignUp')}
-                                      ref={inputRef}
-                                      required
-                                      className={`${formik.errors.username && 'is-invalid'}`}
-                                  />
-                                  <Form.Label htmlFor="username">{t('loginAndSignUp.usernameSignUp')}</Form.Label>
-                                  <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
-                              </Form.Floating>
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col xs={12} md={8} xxl={6}>
+          <Card className="shadow-sm">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+              <div>
+                <Image alt="Регистрация" src="/images/signup-avatar.jpg" roundedCircle />
+              </div>
+                <Form className="w-50" onSubmit={formik.handleSubmit}>
+                   <h1 className="text-center mb-4">{t('loginAndSignUp.headingSignUp')}</h1>
+                   <Form.Floating className="mb-3">
+                   <Form.Control
+                     type="username"
+                     id="username"
+                     onChange={formik.handleChange}
+                     name="username"
+                     autoComplete="username"
+                     value={formik.values.username}
+                     placeholder={t('loginAndSignUp.usernameSignUp')}
+                     ref={inputRef}
+                     required
+                     className={`${formik.errors.username && 'is-invalid'}`}
+                   />
+                    <Form.Label htmlFor="username">{t('loginAndSignUp.usernameSignUp')}</Form.Label>
+                    <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
+                    </Form.Floating>
 
-                              <Form.Floating className="mb-3">
-                                  <Form.Control
-                                      onChange={formik.handleChange}
+                    <Form.Floating className="mb-3">
+                      <Form.Control
+                        onChange={formik.handleChange}
                                       value={formik.values.password}
                                       id="password"
                                       type="password"

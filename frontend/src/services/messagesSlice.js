@@ -4,7 +4,7 @@ import { removeChannel } from './channelsSlice';
 const messagesAdapter = createEntityAdapter();
 
 const messagesSlice = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState: messagesAdapter.getInitialState(),
   reducers: {
     addMessage: messagesAdapter.addOne,
@@ -18,9 +18,10 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { addMessage, addMessages, removeMessage, updateMessage } =
-  messagesSlice.actions;
+export const {
+  addMessage, addMessages, removeMessage, updateMessage,
+} = messagesSlice.actions;
 export const selectors = messagesAdapter.getSelectors(
-  (state) => state.messages
+  (state) => state.messages,
 );
 export default messagesSlice.reducer;

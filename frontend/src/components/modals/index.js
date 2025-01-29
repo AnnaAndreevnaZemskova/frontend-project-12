@@ -1,3 +1,5 @@
+/* eslint import/no-unresolved: [2, { ignore: ['\\.img$'] }] */
+
 import Add from './Add';
 import Remove from './Remove';
 import Rename from './Rename';

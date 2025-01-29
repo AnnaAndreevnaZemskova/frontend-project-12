@@ -1,12 +1,14 @@
+/* eslint no-param-reassign: "error" */
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  username: JSON.parse(localStorage.getItem("username")) || null,
-  token: JSON.parse(localStorage.getItem("token")) || null,
+  username: JSON.parse(localStorage.getItem('username')) || null,
+  token: JSON.parse(localStorage.getItem('token')) || null,
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     loginUser: (state, { payload: { username, token } }) => {
