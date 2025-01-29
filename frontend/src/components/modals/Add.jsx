@@ -60,7 +60,6 @@ const Add = ({ onHide, setCurrentChannelId }) => {
         dispatch(setCurrentChannel(data.id));
       } catch (err) {
         formik.setSubmitting(false);
-
         notifyError(err.status);
         console.log('err: ', err);
         throw err;
