@@ -10,7 +10,7 @@ import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import filter from 'leo-profanity';
-import { Provider, ErrorBoundary } from '@rollbar/react';
+// import { Provider, ErrorBoundary } from '@rollbar/react';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
 import SignUpPage from './SignUpPage';
@@ -25,10 +25,10 @@ import socket from '../socket.js';
 import resources from '../locales/index.js';
 import 'react-toastify/dist/ReactToastify.css';
 
-const rollbarConfig = {
-  accessToken: import.meta.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
-  environment: 'testenv',
-};
+// const rollbarConfig = {
+//   accessToken: import.meta.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
+//   environment: 'testenv',
+// };
 
 filter.clearList();
 filter.add(filter.getDictionary('en'));
@@ -63,14 +63,19 @@ const AuthProvider = ({ children }) => {
   const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn, logIn, logOut]);
 
   return (
-    <AuthContext.Provider value={value}>
-      <Provider config={rollbarConfig}>
-        <ErrorBoundary>
-          {children}
-        </ErrorBoundary>
-      </Provider>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+        {children}
     </AuthContext.Provider>
-  );
+);
+  // return (
+  //   <AuthContext.Provider value={value}>
+  //     <Provider config={rollbarConfig}>
+  //       <ErrorBoundary>
+  //         {children}
+  //       </ErrorBoundary>
+  //     </Provider>
+  //   </AuthContext.Provider>
+  // );
 };
 
 const PrivateRoute = ({ children }) => {
