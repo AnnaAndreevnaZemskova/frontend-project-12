@@ -22,7 +22,7 @@ import filter from 'leo-profanity';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
-    accessToken: '2f39b3a808dd4a218ef81b36ad4b71ed',
+    accessToken: process.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
     environment: 'testenv',
 };
 
