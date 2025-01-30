@@ -1,5 +1,3 @@
-/* eslint no-param-reassign: "error" */
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -11,9 +9,11 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    setCurrentChannel: (state, { payload }) => {
-      state.currentChannelId = payload;
-    },
+    setCurrentChannel: (state, { payload }) => ({
+      ...state,
+      currentChannelId: payload,
+      defaultChannelId: '1',
+    }),
   },
 });
 

@@ -1,19 +1,18 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
-import { addChannel } from '../../services/channelsSlice';
 import { setCurrentChannel } from '../../services/uiSlice';
 import axios from 'axios';
 import routes from '../../routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectors as channelsSelectors } from '../../services/channelsSlice.js'
+import { selectors as channelsSelectors, addChannel } from '../../services/channelsSlice.js';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {}
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
 const Add = ({ onHide, setCurrentChannelId }) => {
@@ -50,19 +49,23 @@ const Add = ({ onHide, setCurrentChannelId }) => {
             }
         };
         try {
-            const { data } = await axios.post(routes.channelsPath(), values, { headers: getAuthHeader() });
-            notifySuccess();
-            setCurrentChannelId(data.id);
-            dispatch(addChannel(data));
-            dispatch(setCurrentChannel(data.id));
+          const { data } = await axios.post(
+            routes.channelsPath(),
+            values,
+            { headers: getAuthHeader() },
+          );
+          notifySuccess();
+          setCurrentChannelId(data.id);
+          dispatch(addChannel(data));
+          dispatch(setCurrentChannel(data.id));
         } catch (err) {
-            formik.setSubmitting(false);
-            notifyError(err.status);
-            console.log('err: ', err);
-            throw err;
+          formik.setSubmitting(false);
+          notifyError(err.status);
+          console.log('err: ', err);
+          throw err;
         }
         onHide();
-    },
+      },
 });
 
 return (

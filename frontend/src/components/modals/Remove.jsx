@@ -9,10 +9,12 @@ import { toast } from 'react-toastify';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {}
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-const Remove = ({ onHide, currentChannelId, setCurrentChannelId, modalInfo: { item } }) => {
+const Remove = ({
+  onHide, currentChannelId, setCurrentChannelId, modalInfo: { item },
+}) => {
   const dispatch = useDispatch();
   const defaultChannelId = useSelector((state) => state.ui.defaultChannelId);
   const { t } = useTranslation();
@@ -21,7 +23,7 @@ const Remove = ({ onHide, currentChannelId, setCurrentChannelId, modalInfo: { it
     switch (type) {
       case 'FETCH_ERROR':
         return toast.error(t('toasts.fetchError'));
-    default:
+      default:
         return toast.error(t('toasts.otherError'));
     }
   };

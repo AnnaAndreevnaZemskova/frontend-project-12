@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, Container, Row, Col, Nav, Dropdown, ButtonGroup } from 'react-bootstrap';
+import {
+  Button, Container, Row, Col, Nav, Dropdown, ButtonGroup,
+} from 'react-bootstrap';
 import MessageBox from './MessageBox.jsx';
 import routes from '../routes.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,31 +15,38 @@ import filter from 'leo-profanity';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {}
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+const renderModal = ({
+  modalInfo, hideModal, setCurrentChannelId, currentChannelId,
+}) => {
+  if (!modalInfo.type) {
+    return null;
+  }
+
+  const Component = getModal(modalInfo.type);
+  return (
+    <Component
+      modalInfo={modalInfo}
+      onHide={hideModal}
+      setCurrentChannelId={setCurrentChannelId}
+      currentChannelId={currentChannelId}
+    />
+  );
 };
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const channels = useSelector(channelsSelectors.selectAll   );
+  const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
   const currentChannel = useSelector((state) => state.ui.currentChannelId);
+
   const [currentChannelId, setCurrentChannelId] = useState(currentChannel);
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });
   const showModal = (type, item = null) => setModalInfo({ type, item });
-  const renderModal = ({ modalInfo, hideModal, setCurrentChannelId, currentChannelId }) => {
-    if (!modalInfo.type) {
-      return null;
-    }
-    const Component = getModal(modalInfo.type);
-      return <Component
-        modalInfo={modalInfo}
-        onHide={hideModal}
-        setCurrentChannelId={setCurrentChannelId}
-        currentChannelId={currentChannelId}
-      />;
-  };
 
   useEffect(() => {
     const fetchChannels = async () => {
@@ -56,15 +65,16 @@ const HomePage = () => {
   }, [dispatch]);
 
   const handleSetCurrentChannelId = (id) => () => {
-    setCurrentChannelId(id)
-    dispatch(setCurrentChannel(id))
+    setCurrentChannelId(id);
+    dispatch(setCurrentChannel(id));
   };
 
   const getVariant = (channelId) => (channelId === currentChannelId ? 'secondary' : '');
 
   const renderUnremovableChannel = ({ id, name }) => (
     <Button className="w-100 rounded-0 text-start" variant={getVariant(id)}>
-      <span className="me-1">{t('homePage.prefix')}</span>{filter.clean(name)}
+      <span className="me-1">{t('homePage.prefix')}</span>
+      {filter.clean(name)}
     </Button>
   );
 

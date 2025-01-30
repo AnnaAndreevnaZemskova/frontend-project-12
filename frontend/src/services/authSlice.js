@@ -1,5 +1,3 @@
-/* eslint no-param-reassign: "error" */
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -11,14 +9,16 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser: (state, { payload: { username, token } }) => {
-      state.username = username;
-      state.token = token;
-    },
-    logoutUser: (state) => {
-      state.username = null;
-      state.token = null;
-    },
+    loginUser: (state, { payload: { username, token } }) => ({
+      ...state,
+      username,
+      token,
+    }),
+    logoutUser: (state) => ({
+      ...state,
+      username: null,
+      token: null,
+    }),
   },
 });
 

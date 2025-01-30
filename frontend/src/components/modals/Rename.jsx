@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {}
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
 const Rename = ({ onHide, currentChannelId }) => {
@@ -22,9 +22,7 @@ const Rename = ({ onHide, currentChannelId }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setTimeout(() => {
-        inputRef.current && inputRef.current.select();
-    }, 0);
+    setTimeout(() => inputRef.current && inputRef.current.select(), 0);
   }, []);
 
   const channelSchema = Yup.object().shape({
@@ -43,16 +41,19 @@ const Rename = ({ onHide, currentChannelId }) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
         const nostifySuccess = () => toast.success(t('toasts.renameChannel'));
-        const nostifyError = () => { };
         try {
-            nostifySuccess();
-            const newChannel = { changes: { name: values.name }, id: currentChannelId };
-            await axios.patch(routes.channelPath(currentChannelId), values, { headers: getAuthHeader() });
-            dispatch(updateChannel(newChannel));
-            onHide();
+          nostifySuccess();
+          const newChannel = { changes: { name: values.name }, id: currentChannelId };
+          await axios.patch(
+            routes.channelPath(currentChannelId),
+            values,
+            { headers: getAuthHeader() },
+          );
+          dispatch(updateChannel(newChannel));
+          onHide();
         } catch (err) {
-            formik.setSubmitting(false);
-            throw err;
+          formik.setSubmitting(false);
+          throw err;
         }
     },
   });
