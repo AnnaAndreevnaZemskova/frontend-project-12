@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 import {
   Button, Container, Row, Col, Nav, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
-import MessageBox from './MessageBox.jsx';
-import routes from '../routes.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectors as channelsSelectors, addChannels } from '../services/channelsSlice.js'
-import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js'
-import { setCurrentChannel } from '../services/uiSlice.js';
-import getModal from './modals/index.js';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import MessageBox from './MessageBox.jsx';
+import routes from '../routes.js';
+import { selectors as channelsSelectors, addChannels } from '../services/channelsSlice.js';
+import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js';
+import { setCurrentChannel } from '../services/uiSlice.js';
+import getModal from './modals/index.js';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));

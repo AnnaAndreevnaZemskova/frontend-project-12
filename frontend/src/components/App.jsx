@@ -5,25 +5,25 @@ import {
   BrowserRouter as Router, Routes, Route, useLocation, Navigate,
 } from 'react-router-dom';
 import { Navbar, Container, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import i18next from 'i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import filter from 'leo-profanity';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
 import SignUpPage from './SignUpPage';
 import AuthContext from '../contexts/AuthContext';
 import useAuth from '../hooks/index.jsx';
 import HomePage from './HomePage.jsx';
-import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../services/authSlice.js';
-import { addChannel, removeChannel, updateChannel } from '../services/channelsSlice.js'
-import { addMessage } from '../services/messagesSlice.js'
+import { addChannel, removeChannel, updateChannel } from '../services/channelsSlice.js';
+import { addMessage } from '../services/messagesSlice.js';
 import { setCurrentChannel } from '../services/uiSlice.js';
 import socket from '../socket.js';
 import resources from '../locales/index.js';
-import i18next from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import filter from 'leo-profanity';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
   accessToken: import.meta.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
@@ -81,7 +81,7 @@ const PrivateRoute = ({ children }) => {
   return (
     auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
   );
-}
+};
 
 const AuthButton = () => {
   const auth = useAuth();
@@ -101,11 +101,11 @@ const App = () => {
         escapeValue: false,
       },
     });
-  
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const defaultChannelId = useSelector((state) => state.ui.defaultChannelId);
-  
+
   useEffect(() => {
     socket.on('newMessage', (payload) => {
       dispatch(addMessage(payload));
@@ -122,7 +122,7 @@ const App = () => {
     socket.on('renameChannel', (payload) => {
       dispatch(updateChannel({ changes: { name: payload.name }, id: payload.id }));
     });
-  
+
     return () => {
       socket.off('newMessage');
       socket.off('newChannel');
@@ -130,7 +130,7 @@ const App = () => {
       socket.off('renameChannel');
     };
   }, [dispatch, defaultChannelId]);
-  
+
   return (
     <AuthProvider>
       <div className="d-flex flex-column h-100">
@@ -141,7 +141,7 @@ const App = () => {
               <AuthButton />
             </Container>
           </Navbar>
-  
+
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
@@ -160,6 +160,6 @@ const App = () => {
       <ToastContainer closeOnClick />
     </AuthProvider>
   );
-}
+};
 
 export default App;

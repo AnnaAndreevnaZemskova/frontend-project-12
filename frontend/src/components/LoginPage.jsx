@@ -2,15 +2,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import routes from '../routes.js';
 import {
   Container, Row, Col, Card,
   Form, Button, Image,
 } from 'react-bootstrap';
-import useAuth from '../hooks/index.jsx';
-import { loginUser } from '../services/authSlice.js';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { loginUser } from '../services/authSlice.js';
+import routes from '../routes.js';
+import useAuth from '../hooks/index.jsx';
 
 const LoginPage = () => {
   const auth = useAuth();

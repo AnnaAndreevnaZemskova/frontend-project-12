@@ -1,13 +1,13 @@
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { selectors as channelsSelectors } from '../services/channelsSlice.js'
-import { addMessage } from '../services/messagesSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import routes from '../routes.js';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import routes from '../routes.js';
+import { addMessage } from '../services/messagesSlice.js';
+import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
 const MessageBox = ({ messages, currentChannelId }) => {
   const dispatch = useDispatch();

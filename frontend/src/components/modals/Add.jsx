@@ -1,14 +1,14 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
-import { setCurrentChannel } from '../../services/uiSlice';
 import axios from 'axios';
-import routes from '../../routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectors as channelsSelectors, addChannel } from '../../services/channelsSlice.js';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { selectors as channelsSelectors, addChannel } from '../../services/channelsSlice.js';
+import routes from '../../routes';
+import { setCurrentChannel } from '../../services/uiSlice';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
@@ -16,7 +16,7 @@ const getAuthHeader = () => {
 };
 
 const Add = ({ onHide, setCurrentChannelId }) => {
-  const channels = useSelector(channelsSelectors.selectAll); 
+  const channels = useSelector(channelsSelectors.selectAll);
   const dispatch = useDispatch();
   const inputRef = useRef();
   const { t } = useTranslation();
@@ -27,48 +27,49 @@ const Add = ({ onHide, setCurrentChannelId }) => {
 
   const channelSchema = Yup.object().shape({
     name: Yup.string()
-        .required(t('modal.errors.validation.required'))
-        .min(3, t('modal.errors.validation.minMax'))
-        .max(20, t('modal.errors.validation.minMax'))
-        .notOneOf(channels.map((channel) => channel.name), t('modal.errors.validation.unique'))
+      .required(t('modal.errors.validation.required'))
+      .min(3, t('modal.errors.validation.minMax'))
+      .max(20, t('modal.errors.validation.minMax'))
+      .notOneOf(channels.map((channel) => channel.name), t('modal.errors.validation.unique')),
   });
 
   const formik = useFormik({
     initialValues: {
-        name: '',
+      name: '',
     },
     validationSchema: channelSchema,
     onSubmit: async (values) => {
-        const notifySuccess = () => toast.success(t('toasts.createChannel'));
-        const notifyError = (type) => {
-            switch (type) {
-                case 'FETCH_ERROR':
-                    return toast.error(t('toasts.fetchError'));
-                default:
-                    return toast.error(t('toasts.otherError'));
-            }
-        };
-        try {
-          const { data } = await axios.post(
-            routes.channelsPath(),
-            values,
-            { headers: getAuthHeader() },
-          );
-          notifySuccess();
-          setCurrentChannelId(data.id);
-          dispatch(addChannel(data));
-          dispatch(setCurrentChannel(data.id));
-        } catch (err) {
-          formik.setSubmitting(false);
-          notifyError(err.status);
-          console.log('err: ', err);
-          throw err;
+      const notifySuccess = () => toast.success(t('toasts.createChannel'));
+      const notifyError = (type) => {
+        switch (type) {
+          case 'FETCH_ERROR':
+            return toast.error(t('toasts.fetchError'));
+          default:
+            return toast.error(t('toasts.otherError'));
         }
-        onHide();
-      },
-});
+      };
+      try {
+        const { data } = await axios.post(
+          routes.channelsPath(),
+          values,
+          { headers: getAuthHeader() },
+        );
+        notifySuccess();
+        setCurrentChannelId(data.id);
+        dispatch(addChannel(data));
+        dispatch(setCurrentChannel(data.id));
+      } catch (err) {
+        formik.setSubmitting(false);
 
-return (
+        notifyError(err.status);
+        console.log('err: ', err);
+        throw err;
+      }
+      onHide();
+    },
+  });
+
+  return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title className="h4">{t('modal.add.heading')}</Modal.Title>

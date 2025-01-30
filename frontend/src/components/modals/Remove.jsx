@@ -1,11 +1,11 @@
 import { Modal, Button } from 'react-bootstrap';
-import { removeChannel } from '../../services/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import routes from '../../routes';
-import { setCurrentChannel } from '../../services/uiSlice';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import routes from '../../routes';
+import { setCurrentChannel } from '../../services/uiSlice';
+import { removeChannel } from '../../services/channelsSlice';
 
 const getAuthHeader = () => {
   const token = JSON.parse(localStorage.getItem('token'));
@@ -31,17 +31,17 @@ const Remove = ({
   const handleRemoveChannel = async () => {
     try {
       await axios.delete(routes.channelPath(item), { headers: getAuthHeader() });
-        notify();
-        setCurrentChannelId(defaultChannelId)
-        dispatch(removeChannel(currentChannelId));
-        dispatch(setCurrentChannel(defaultChannelId));
+      notify();
+      setCurrentChannelId(defaultChannelId);
+      dispatch(removeChannel(currentChannelId));
+      dispatch(setCurrentChannel(defaultChannelId));
     } catch (err) {
-        console.log('err.isAxiosError: ', err.isAxiosError);
-        console.log('err.response.status: ', err.response.status);
-        console.log('err: ', err);
-        notifyError(err.status);
+      console.log('err.isAxiosError: ', err.isAxiosError);
+      console.log('err.response.status: ', err.response.status);
+      console.log('err: ', err);
+      notifyError(err.status);
     }
-      onHide();
+    onHide();
   };
 
   return (
