@@ -10,8 +10,8 @@ import routes from '../routes.js';
 import { addMessage } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
-const selectMessages = (state) => state.messages.messages;
-const selectCurrentChannelId = (state) => state.channels.currentChannelId
+const selectMessages = (state) => state.messages;
+const selectCurrentChannelId = (state) => state.currentChannelId
 
 export const selectMessagesForCurrentChannel = createSelector(
   [selectMessages, selectCurrentChannelId],
