@@ -2,7 +2,6 @@ import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
@@ -10,26 +9,10 @@ import routes from '../routes.js';
 import { addMessage } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
-const selectChannels = (state) => state.channels;
-const selectMessages = (state) => state.messages;
-
-const selectCurrentChannel = (state, channelId) => 
-  selectChannels(state).find(channel => channel.id === channelId);
-
-const selectMessagesForCurrentChannel = createSelector(
-  [selectMessages, selectCurrentChannel],
-  (messages, currentChannel) => {
-      if (!currentChannel) return [];
-      return messages.filter(message => message.channelId === currentChannel.id);
-  }
-);
-
-const MessageBox = () => {
+const MessageBox = ({ messages, currentChannelId }) => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.auth.username);
   const channels = useSelector(channelsSelectors.selectAll);
-  const currentChannelId = useSelector(selectCurrentChannelId);
-  const messages = useSelector((state) => selectMessagesForCurrentChannel(state, currentChannelId));
   const inputRef = useRef();
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const { t } = useTranslation();
@@ -60,14 +43,16 @@ const MessageBox = () => {
   });
 
   const renderMessages = () => (
-    messages.map((message) => (
-      <div key={message.id} className="text-break mb-2">
-        <b>{message.username}</b>
-        :
-        {' '}
-        {filter.clean(message.body)}
-      </div>
-    ))
+    messages.length > 0 && messages
+      .filter((message) => message.channelId === currentChannelId)
+      .map((message) => (
+        <div key={message.id} className="text-break mb-2">
+          <b>{message.username}</b>
+          :
+          {' '}
+          {filter.clean(message.body)}
+        </div>
+      ))
   );
 
   return (

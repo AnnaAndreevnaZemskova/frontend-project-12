@@ -56,7 +56,7 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <Image src="/images/login-avatar.jpeg" alt="Войти" roundedCircle />
+                <Image src="/images/login-avatar.jpeg" alt={t('loginAndSignUp.heading')} roundedCircle />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('loginAndSignUp.heading')}</h1>
