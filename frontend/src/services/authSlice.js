@@ -9,13 +9,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser: (state, { payload: { username, token } }) => ({
-     // ...state,
+    loginUser: ( { payload: { username, token } }) => ({
+      // ...state,
       username,
       token,
     }),
-    logoutUser: (state) => ({
-     // ...state,
+    logoutUser: () => ({
+      // ...state,
       username: null,
       token: null,
     }),
