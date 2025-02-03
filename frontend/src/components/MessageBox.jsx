@@ -2,12 +2,35 @@ import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import routes from '../routes.js';
 import { addMessage } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
+
+const selectFilteredMessages = createSelector(
+    [(state) => state.messages, (_, currentChannelId) => currentChannelId],
+    (messages, currentChannelId) => {
+        return messages.filter((message) => message.channelId === currentChannelId);
+    }
+);
+
+const selectRenderedMessages = createSelector(
+  [selectFilteredMessages],
+  (messages) => {
+      return messages.length > 0
+          && messages.map((message) => (
+              <div key={message.id} className="text-break mb-2">
+                <b>{message.username}</b>
+                :
+                {' '}
+                {filter.clean(message.body)}
+              </div>
+          ));
+  }
+);
 
 const MessageBox = ({ messages, currentChannelId }) => {
   const dispatch = useDispatch();
@@ -17,6 +40,8 @@ const MessageBox = ({ messages, currentChannelId }) => {
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const { t } = useTranslation();
 
+  const renderMessages = useSelector((state) => selectRenderedMessages(state, currentChannelId));
+  
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
@@ -27,33 +52,35 @@ const MessageBox = ({ messages, currentChannelId }) => {
   };
 
   const formik = useFormik({
-    initialValues: { body: '', channelId: currentChannelId, username },
-    enableReinitialize: true,
-    onSubmit: async (values) => {
-      try {
-        const res = await axios.post(routes.messagesPath(), values, { headers: getAuthHeader() });
-        dispatch(addMessage(res.data));
-        formik.setSubmitting(true);
-        formik.resetForm();
-      } catch (err) {
-        formik.setSubmitting(false);
-        throw err;
-      }
-    },
+      initialValues: { body: '' },
+      onSubmit: async (values, { resetForm }) => {
+        try {
+          const res = await axios.post(
+            routes.messagesPath(),
+            { ...values, channelId: currentChannelId, username },
+            { headers: getAuthHeader() }
+          );
+          dispatch(addMessage(res.data));
+            resetForm();
+        } catch (err) {
+          formik.setSubmitting(false);
+            throw err;
+        }
+      },
   });
 
-  const renderMessages = () => (
-    messages.length > 0 && messages
-      .filter((message) => message.channelId === currentChannelId)
-      .map((message) => (
-        <div key={message.id} className="text-break mb-2">
-          <b>{message.username}</b>
-          :
-          {' '}
-          {filter.clean(message.body)}
-        </div>
-      ))
-  );
+  // const renderMessages = () => (
+  //   messages.length > 0 && messages
+  //     .filter((message) => message.channelId === currentChannelId)
+  //     .map((message) => (
+  //       <div key={message.id} className="text-break mb-2">
+  //         <b>{message.username}</b>
+  //         :
+  //         {' '}
+  //         {filter.clean(message.body)}
+  //       </div>
+  //     ))
+  // );
 
   return (
     <div className="d-flex flex-column h-100">
