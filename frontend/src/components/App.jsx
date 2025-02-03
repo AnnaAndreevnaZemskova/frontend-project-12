@@ -23,6 +23,7 @@ import { addMessage } from '../services/messagesSlice.js';
 import { setCurrentChannel } from '../services/uiSlice.js';
 import socket from '../socket.js';
 import resources from '../locales/index.js';
+import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
 
 const rollbarConfig = {
