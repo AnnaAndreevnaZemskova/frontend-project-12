@@ -143,9 +143,9 @@ const App = () => {
           </Navbar>
 
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path={routes.pages.loginPage()} element={<LoginPage />} />
+            <Route path={routes.pages.signUpPage()} element={<SignUpPage />} />
+            <Route path={routes.pages.notFoundPage()} element={<NotFoundPage />} />
             <Route
               path="/"
               element={(

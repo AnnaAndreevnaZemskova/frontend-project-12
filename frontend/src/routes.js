@@ -7,4 +7,10 @@ export default {
   channelPath: (id) => [apiPath, 'channels', `${id}`].join('/'),
   messagesPath: () => [apiPath, 'messages'].join('/'),
   messagePath: (id) => [apiPath, 'messages', `${id}`].join('/'),
+  pages: {
+    loginPage: () => '/login',
+    signUpPage: () => '/signup',
+    chatPage: () => '/',
+    notFoundPage: () => '*',
+  },
 };
