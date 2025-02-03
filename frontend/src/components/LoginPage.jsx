@@ -100,7 +100,7 @@ const LoginPage = () => {
               <div className="text-center">
                 <span>{t('loginAndSignUp.footerSpan')}</span>
                 {' '}
-                <a href={routes.signUpPage()}>{t('loginAndSignUp.linkSignUp')}</a>
+                <a href={routes.pages.signUpPage()}>{t('loginAndSignUp.linkSignUp')}</a>
               </div>
             </Card.Footer>
           </Card>

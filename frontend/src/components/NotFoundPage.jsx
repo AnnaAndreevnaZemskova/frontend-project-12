@@ -11,7 +11,7 @@ const NotFoundPage = () => {
       <h1 className="h4 text-muted">{t('notFoundPage.heading')}</h1>
       <p className="text-muted">
         {t('notFoundPage.body')}
-        <a href={routes.chatPage()}>{t('notFoundPage.homeLink')}</a>
+        <a href={routes.pages.chatPage()}>{t('notFoundPage.homeLink')}</a>
       </p>
     </div>
   );
