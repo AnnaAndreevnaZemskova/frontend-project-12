@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -100,7 +100,7 @@ const LoginPage = () => {
               <div className="text-center">
                 <span>{t('loginAndSignUp.footerSpan')}</span>
                 {' '}
-                <Link to="/signup">{t('loginAndSignUp.linkSignUp')}</Link>
+                <a href={routes.signUpPage()}>{t('loginAndSignUp.linkSignUp')}</a>
               </div>
             </Card.Footer>
           </Card>
