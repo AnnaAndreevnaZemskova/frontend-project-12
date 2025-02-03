@@ -10,12 +10,18 @@ import routes from '../routes.js';
 import { addMessage } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
+const selectChannels = (state) => state.channels;
 const selectMessages = (state) => state.messages;
-const selectCurrentChannelId = (state) => state.currentChannelId
 
-export const selectMessagesForCurrentChannel = createSelector(
-  [selectMessages, selectCurrentChannelId],
-  (messages, currentChannelId) => messages.filter(message => message.channelId === currentChannelId)
+const selectCurrentChannel = (state, channelId) => 
+  selectChannels(state).find(channel => channel.id === channelId);
+
+const selectMessagesForCurrentChannel = createSelector(
+  [selectMessages, selectCurrentChannel],
+  (messages, currentChannel) => {
+      if (!currentChannel) return [];
+      return messages.filter(message => message.channelId === currentChannel.id);
+  }
 );
 
 const MessageBox = () => {
@@ -23,7 +29,7 @@ const MessageBox = () => {
   const username = useSelector((state) => state.auth.username);
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const messages = useSelector(selectMessagesForCurrentChannel);
+  const messages = useSelector((state) => selectMessagesForCurrentChannel(state, currentChannelId));
   const inputRef = useRef();
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const { t } = useTranslation();
