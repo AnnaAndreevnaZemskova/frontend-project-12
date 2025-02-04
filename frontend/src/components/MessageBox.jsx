@@ -10,26 +10,20 @@ import routes from '../routes.js';
 import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
-//const channelsSelectors = (state) => state.channels;
-
-const selectCurrentChannelId = (currentChannelId) => currentChannelId;
 
 const selectCurrentChannel = createSelector(
-  [channelsSelectors, selectCurrentChannelId],
+  [channelsSelectors.selectAll, (_, currentChannelId) => currentChannelId],
   (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId)
 );
 
-// const messagesSelectors = (state) => state.messages;
-
 const selectMessagesByChannel = createSelector(
-  [messagesSelectors, selectCurrentChannelId],
+  [messagesSelectors.selectAll, (_, currentChannelId) => currentChannelId],
   (messages, currentChannelId) => messages.filter((message) => message.channelId === currentChannelId)
 );
 
 const MessageBox = ({ currentChannelId }) => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.auth.username);
- // const channels = useSelector(channelsSelectors.selectAll);
   const inputRef = useRef();
   const currentChannel = useSelector((state) => selectCurrentChannel(state, currentChannelId));
   const { t } = useTranslation();
@@ -49,20 +43,19 @@ const MessageBox = ({ currentChannelId }) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(routes.messagesPath(), values, { headers: getAuthHeader() });
+        const res = await axios.post(routes.messagesPath(), values, getAuthHeader());
         dispatch(addMessage(res.data));
-        formik.setSubmitting(true);
         formik.resetForm();
       } catch (err) {
-        formik.setSubmitting(false);
-        throw err;
+        throw new Error(err);
       }
     },
   });
 
   const renderMessages = () => (
-    messages.length > 0 && messages
-      .filter((message) => message.channelId === currentChannelId)
+    // messages.length > 0 &&
+     messages
+    //   .filter((message) => message.channelId === currentChannelId)
       .map((message) => (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
