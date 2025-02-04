@@ -2,20 +2,38 @@ import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import routes from '../routes.js';
-import { addMessage } from '../services/messagesSlice.js';
+import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
-const MessageBox = ({ messages, currentChannelId }) => {
+//const channelsSelectors = (state) => state.channels;
+
+const selectCurrentChannelId = (currentChannelId) => currentChannelId;
+
+const selectCurrentChannel = createSelector(
+  [channelsSelectors, selectCurrentChannelId],
+  (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId)
+);
+
+// const messagesSelectors = (state) => state.messages;
+
+const selectMessagesByChannel = createSelector(
+  [messagesSelectors, selectCurrentChannelId],
+  (messages, currentChannelId) => messages.filter((message) => message.channelId === currentChannelId)
+);
+
+const MessageBox = ({ currentChannelId }) => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.auth.username);
-  const channels = useSelector(channelsSelectors.selectAll);
+ // const channels = useSelector(channelsSelectors.selectAll);
   const inputRef = useRef();
-  const currentChannel = channels.find((channel) => channel.id === currentChannelId);
+  const currentChannel = useSelector((state) => selectCurrentChannel(state, currentChannelId));
   const { t } = useTranslation();
+  const messages = useSelector((state) => selectMessagesByChannel(state, currentChannelId));
 
   useEffect(() => {
     inputRef.current.focus();
