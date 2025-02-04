@@ -43,9 +43,10 @@ const MessageBox = ({ currentChannelId }) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(routes.messagesPath(), values, getAuthHeader());
+        const cleanedMessage = filter.clean(values.body);
+        const res = await axios.post(routes.messagesPath(), { ...values, body: cleanedMessage }, { headers: getAuthHeader() });
         dispatch(addMessage(res.data));
-        formik.resetForm();
+        resetForm();
       } catch (err) {
         throw new Error(err);
       }
@@ -53,17 +54,11 @@ const MessageBox = ({ currentChannelId }) => {
   });
 
   const renderMessages = () => (
-    // messages.length > 0 &&
-     messages
-    //   .filter((message) => message.channelId === currentChannelId)
-      .map((message) => (
-        <div key={message.id} className="text-break mb-2">
-          <b>{message.username}</b>
-          :
-          {' '}
-          {filter.clean(message.body)}
-        </div>
-      ))
+    messages.map((message) => (
+      <div key={message.id} className="text-break mb-2">
+        <b>{message.username}</b>: {message.body}
+      </div>
+    ))
   );
 
   return (
@@ -77,7 +72,7 @@ const MessageBox = ({ currentChannelId }) => {
           </b>
         </p>
         <span className="text-muted">
-          {t('homePage.messageCount.keyWithCount', { count: renderMessages().length || 0 })}
+          {t('homePage.messageCount.keyWithCount', { count: messages.length })}
         </span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5 ">
