@@ -10,7 +10,6 @@ import routes from '../routes.js';
 import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
-
 const selectCurrentChannel = createSelector(
   [channelsSelectors.selectAll, (_, currentChannelId) => currentChannelId],
   (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId),
@@ -18,8 +17,8 @@ const selectCurrentChannel = createSelector(
 
 const selectMessagesByChannel = createSelector(
   [messagesSelectors.selectAll, (_, currentChannelId) => currentChannelId],
-  (messages, currentChannelId) =>
-    messages.filter((message) => message.channelId === currentChannelId),
+  (messages, currentChannelId) => messages.filter((message) => 
+    message.channelId === currentChannelId),
 );
 
 const MessageBox = ({ currentChannelId }) => {
