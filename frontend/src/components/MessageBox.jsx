@@ -17,10 +17,9 @@ const selectCurrentChannel = createSelector(
 
 const selectMessagesByChannel = createSelector(
   [messagesSelectors.selectAll, (_, currentChannelId) => currentChannelId],
-  (messages, currentChannelId) => 
-    messages.filter((message) => 
-      message.channelId === currentChannelId
-    ),
+  (messages, currentChannelId) => messages.filter(
+    (message) => message.channelId === currentChannelId,
+  ),
 );
 
 const MessageBox = ({ currentChannelId }) => {
