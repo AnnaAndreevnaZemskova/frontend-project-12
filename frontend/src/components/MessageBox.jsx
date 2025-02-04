@@ -13,12 +13,13 @@ import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
 const selectCurrentChannel = createSelector(
   [channelsSelectors.selectAll, (_, currentChannelId) => currentChannelId],
-  (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId)
+  (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId),
 );
 
 const selectMessagesByChannel = createSelector(
   [messagesSelectors.selectAll, (_, currentChannelId) => currentChannelId],
-  (messages, currentChannelId) => messages.filter((message) => message.channelId === currentChannelId)
+  (messages, currentChannelId) =>
+    messages.filter((message) => message.channelId === currentChannelId),
 );
 
 const MessageBox = ({ currentChannelId }) => {
@@ -44,9 +45,11 @@ const MessageBox = ({ currentChannelId }) => {
     onSubmit: async (values) => {
       try {
         const cleanedMessage = filter.clean(values.body);
-        const res = await axios.post(routes.messagesPath(), { ...values, body: cleanedMessage }, { headers: getAuthHeader() });
+        const headers = getAuthHeader();
+        const messageData = { ...values, body: cleanedMessage };
+        const res = await axios.post(routes.messagesPath(), messageData, { headers });
         dispatch(addMessage(res.data));
-        resetForm();
+        formik.resetForm();
       } catch (err) {
         throw new Error(err);
       }
@@ -56,7 +59,10 @@ const MessageBox = ({ currentChannelId }) => {
   const renderMessages = () => (
     messages.map((message) => (
       <div key={message.id} className="text-break mb-2">
-        <b>{message.username}</b>: {message.body}
+        <b>{message.username}</b>
+        :
+        {' '}
+        {message.body}
       </div>
     ))
   );
