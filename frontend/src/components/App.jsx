@@ -142,7 +142,7 @@ const App = () => {
             <Route path={routes.pages.signUpPage()} element={<SignUpPage />} />
             <Route path={routes.pages.notFoundPage()} element={<NotFoundPage />} />
             <Route
-              path="/"
+              path={routes.pages.chatPage()}
               element={(
                 <PrivateRoute>
                   <HomePage />
