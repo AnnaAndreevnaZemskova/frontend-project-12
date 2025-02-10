@@ -69,7 +69,7 @@ const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
   return (
-    auth.loggedIn ? children : <Navigate to path={routes.pages.loginPage()} state={{ from: location }} />
+    auth.loggedIn ? children : <Navigate to={routes.pages.loginPage()} state={{ from: location }} />
   );
 };
 
