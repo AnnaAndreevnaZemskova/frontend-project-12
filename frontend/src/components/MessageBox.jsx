@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import routes from '../routes.js';
+import getAuthHeader from '../services/auth';
 import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
 
@@ -33,11 +34,6 @@ const MessageBox = ({ currentChannelId }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
-
-  const getAuthHeader = () => {
-    const token = JSON.parse(localStorage.getItem('token'));
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
 
   const formik = useFormik({
     initialValues: { body: '', channelId: currentChannelId, username },
