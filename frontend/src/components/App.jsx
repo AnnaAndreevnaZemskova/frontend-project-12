@@ -26,10 +26,8 @@ import resources from '../locales/index.js';
 import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
 
-const rollbarConfig = selectRollbarConfig();
-const filter = selectProfanityFilter();
-
 const AuthProvider = ({ children }) => {
+  const rollbarConfig = selectRollbarConfig();
   const hasToken = !!localStorage.getItem('token');
   const [loggedIn, setLoggedIn] = useState(hasToken);
   const dispatch = useDispatch();
@@ -70,9 +68,8 @@ const AuthProvider = ({ children }) => {
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
-
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    auth.loggedIn ? children : <Navigate to path={routes.pages.loginPage()} state={{ from: location }} />
   );
 };
 
@@ -95,6 +92,7 @@ const App = () => {
       },
     });
 
+  const filter = selectProfanityFilter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const defaultChannelId = useSelector(selectDefaultChannelId);
