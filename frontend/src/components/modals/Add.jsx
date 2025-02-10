@@ -8,12 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { selectors as channelsSelectors, addChannel } from '../../services/channelsSlice.js';
 import routes from '../../routes';
-import { setCurrentChannel } from '../../services/uiSlice';
-
-const getAuthHeader = () => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+import { setCurrentChannel } from '../../services/uiSlice.js';
+import { getAuthHeader } from '../../services/auth.js';
 
 const Add = ({ onHide, setCurrentChannelId }) => {
   const channels = useSelector(channelsSelectors.selectAll);
