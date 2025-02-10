@@ -13,7 +13,7 @@ import getAuthHeader from '../../services/auth';
 const Rename = ({ onHide, currentChannelId }) => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
-  const currentChannel = selectCurrentChannel(channels, currentChannelId);
+  const currentChannel = useSelector(selectCurrentChannel);
   const inputRef = useRef();
   const { t } = useTranslation();
 
