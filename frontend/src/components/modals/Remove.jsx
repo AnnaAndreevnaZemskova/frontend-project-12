@@ -4,16 +4,15 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import routes from '../../routes';
-import { setCurrentChannel } from '../../services/uiSlice';
+import { setCurrentChannel, selectDefaultChannelId } from '../../services/uiSlice';
 import { removeChannel } from '../../services/channelsSlice';
-import { selectors as uiSelectors } from '../../services/uiSlice';
 import getAuthHeader from '../../services/auth';
 
 const Remove = ({
   onHide, currentChannelId, setCurrentChannelId, modalInfo: { item },
 }) => {
   const dispatch = useDispatch();
-  const defaultChannelId = useSelector(uiSelectors.selectDefaultChannelId);
+  const defaultChannelId = useSelector(selectDefaultChannelId);
   const { t } = useTranslation();
   const notify = () => toast.success(t('toasts.removeChannel'));
   const notifyError = (type) => {
