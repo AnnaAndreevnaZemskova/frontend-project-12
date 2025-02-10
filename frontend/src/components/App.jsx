@@ -101,12 +101,14 @@ const App = () => {
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
+      const sanitizedPayload = { ...payload, text: filter.clean(payload.text) };
       payload.text = filter.clean(payload.text);
-      dispatch(addMessage(payload));
+      dispatch(addMessage(sanitizedPayload));
     });
     socket.on('newChannel', (payload) => {
+      const sanitizedPayload = { ...payload, name: filter.clean(payload.name) };
       payload.name = filter.clean(payload.name);
-      dispatch(addChannel(payload));
+      dispatch(addChannel(sanitizedPayload));
     });
     socket.on('removeChannel', (payload) => {
       console.log(payload.id);
