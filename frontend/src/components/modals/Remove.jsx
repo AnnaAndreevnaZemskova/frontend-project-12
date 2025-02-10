@@ -6,13 +6,14 @@ import { toast } from 'react-toastify';
 import routes from '../../routes';
 import { setCurrentChannel } from '../../services/uiSlice';
 import { removeChannel } from '../../services/channelsSlice';
+import { selectors as uiSelectors } from '../../services/uiSlice';
 import getAuthHeader from '../../services/auth';
 
 const Remove = ({
   onHide, currentChannelId, setCurrentChannelId, modalInfo: { item },
 }) => {
   const dispatch = useDispatch();
-  const defaultChannelId = useSelector((state) => state.ui.defaultChannelId);
+  const defaultChannelId = useSelector(uiSelectors.selectDefaultChannelId);
   const { t } = useTranslation();
   const notify = () => toast.success(t('toasts.removeChannel'));
   const notifyError = (type) => {

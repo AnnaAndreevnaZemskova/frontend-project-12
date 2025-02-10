@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+
+const defaultChannelAdapter = createEntityAdapter();
 
 const initialState = {
   defaultChannelId: '1',
@@ -18,4 +20,7 @@ const uiSlice = createSlice({
 });
 
 export const { setCurrentChannel } = uiSlice.actions;
+export const selectors = defaultChannelAdapter.getSelectors(
+  (state) => state.ui
+);
 export default uiSlice.reducer;
