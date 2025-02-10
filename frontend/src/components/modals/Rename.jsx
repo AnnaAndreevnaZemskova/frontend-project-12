@@ -7,13 +7,13 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import routes from '../../routes';
-import { selectors as channelsSelectors, updateChannel } from '../../services/channelsSlice';
+import { selectors as channelsSelectors, updateChannel, selectCurrentChannel } from '../../services/channelsSlice';
 import getAuthHeader from '../../services/auth';
 
 const Rename = ({ onHide, currentChannelId }) => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
-  const currentChannel = channels.find((channel) => channel.id === currentChannelId);
+  const currentChannel = selectCurrentChannel(channels, currentChannelId);
   const inputRef = useRef();
   const { t } = useTranslation();
 
