@@ -8,11 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import routes from '../../routes';
 import { selectors as channelsSelectors, updateChannel } from '../../services/channelsSlice';
-
-const getAuthHeader = () => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+import getAuthHeader from '../../services/auth';
 
 const Rename = ({ onHide, currentChannelId }) => {
   const dispatch = useDispatch();

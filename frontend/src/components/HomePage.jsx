@@ -12,11 +12,7 @@ import { selectors as channelsSelectors, addChannels } from '../services/channel
 import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js';
 import { setCurrentChannel } from '../services/uiSlice.js';
 import getModal from './modals/index.js';
-
-const getAuthHeader = () => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+import getAuthHeader from '../services/auth';
 
 const renderModal = ({
   modalInfo, hideModal, setCurrentChannelId, currentChannelId,

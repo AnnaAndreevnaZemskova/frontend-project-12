@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { selectors as channelsSelectors, addChannel } from '../../services/channelsSlice.js';
 import routes from '../../routes';
 import { setCurrentChannel } from '../../services/uiSlice.js';
-import { getAuthHeader } from '../../services/auth.js';
+import getAuthHeader from '../../services/auth';
 
 const Add = ({ onHide, setCurrentChannelId }) => {
   const channels = useSelector(channelsSelectors.selectAll);

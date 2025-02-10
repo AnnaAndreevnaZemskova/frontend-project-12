@@ -6,11 +6,7 @@ import { toast } from 'react-toastify';
 import routes from '../../routes';
 import { setCurrentChannel } from '../../services/uiSlice';
 import { removeChannel } from '../../services/channelsSlice';
-
-const getAuthHeader = () => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+import getAuthHeader from '../../services/auth';
 
 const Remove = ({
   onHide, currentChannelId, setCurrentChannelId, modalInfo: { item },
