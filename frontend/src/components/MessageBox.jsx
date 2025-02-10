@@ -9,7 +9,6 @@ import filter from 'leo-profanity';
 import routes from '../routes.js';
 import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
 import { selectors as channelsSelectors } from '../services/channelsSlice.js';
-import getAuthHeader from '../services/auth';
 
 const selectCurrentChannel = createSelector(
   [channelsSelectors.selectAll, (_, currentChannelId) => currentChannelId],
@@ -34,6 +33,11 @@ const MessageBox = ({ currentChannelId }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
+
+  const getAuthHeader = () => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
 
   const formik = useFormik({
     initialValues: { body: '', channelId: currentChannelId, username },

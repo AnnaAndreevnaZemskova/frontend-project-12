@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import MessageBox from './MessageBox.jsx';
 import routes from '../routes.js';
-import { selectors as channelsSelectors, addChannels, selectCurrentChannel } from '../services/channelsSlice.js';
+import { selectors as channelsSelectors, addChannels } from '../services/channelsSlice.js';
 import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js';
 import { setCurrentChannel } from '../services/uiSlice.js';
 import getModal from './modals/index.js';
@@ -37,7 +37,7 @@ const HomePage = () => {
   const { t } = useTranslation();
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannel = selectCurrentChannel(channels, currentChannelId);
+  const currentChannel = useSelector((state) => state.ui.currentChannelId);
 
   const [currentChannelId, setCurrentChannelId] = useState(currentChannel);
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });

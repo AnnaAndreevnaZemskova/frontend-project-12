@@ -19,7 +19,7 @@ import HomePage from './HomePage.jsx';
 import { logoutUser } from '../services/authSlice.js';
 import { addChannel, removeChannel, updateChannel } from '../services/channelsSlice.js';
 import { addMessage } from '../services/messagesSlice.js';
-import { setCurrentChannel, selectDefaultChannelId } from '../services/uiSlice';
+import { setCurrentChannel } from '../services/uiSlice.js';
 import { selectRollbarConfig, selectProfanityFilter } from '../selectors/configSelectors.js';
 import socket from '../socket.js';
 import resources from '../locales/index.js';
@@ -97,7 +97,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const defaultChannelId = useSelector(selectDefaultChannelId);
+  const defaultChannelId = useSelector((state) => state.ui.defaultChannelId);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
