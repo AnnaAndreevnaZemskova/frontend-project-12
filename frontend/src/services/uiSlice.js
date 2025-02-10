@@ -21,6 +21,6 @@ const uiSlice = createSlice({
 
 export const { setCurrentChannel } = uiSlice.actions;
 export const selectors = defaultChannelAdapter.getSelectors(
-  (state) => state.ui
+  (state) => state.ui.defaultChannelId
 );
 export default uiSlice.reducer;

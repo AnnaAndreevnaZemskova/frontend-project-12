@@ -21,21 +21,14 @@ import { logoutUser } from '../services/authSlice.js';
 import { addChannel, removeChannel, updateChannel } from '../services/channelsSlice.js';
 import { addMessage } from '../services/messagesSlice.js';
 import { setCurrentChannel } from '../services/uiSlice.js';
+import { selectRollbarConfig, selectProfanityFilter } from '../selectors/configSelectors.js';
 import socket from '../socket.js';
 import resources from '../locales/index.js';
 import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
 
-const rollbarConfig = {
-  accessToken: import.meta.env.REACT_APP_ROLLBAR_POST_CLIENT_TOKEN,
-  environment: 'production',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-
-filter.clearList();
-filter.add(filter.getDictionary('en'));
-filter.add(filter.getDictionary('ru'));
+const rollbarConfig = selectRollbarConfig();
+const filter = selectProfanityFilter();
 
 const AuthProvider = ({ children }) => {
   const hasToken = !!localStorage.getItem('token');
@@ -109,9 +102,11 @@ const App = () => {
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
+      payload.text = filter.clean(payload.text);
       dispatch(addMessage(payload));
     });
     socket.on('newChannel', (payload) => {
+      payload.name = filter.clean(payload.name);
       dispatch(addChannel(payload));
     });
     socket.on('removeChannel', (payload) => {
