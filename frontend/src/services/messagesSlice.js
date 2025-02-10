@@ -24,4 +24,7 @@ export const {
 export const selectors = messagesAdapter.getSelectors(
   (state) => state.messages,
 );
+export const selectMessagesByChannel = (messages, currentChannelId) => messages.filter(
+  (message) => message.channelId === currentChannelId,
+);
 export default messagesSlice.reducer;
