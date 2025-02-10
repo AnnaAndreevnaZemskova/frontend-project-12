@@ -43,7 +43,7 @@ const HomePage = () => {
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });
   const showModal = (type, item = null) => setModalInfo({ type, item });
-  
+
   useEffect(() => {
     const fetchChannels = async () => {
       const { data } = await axios.get(routes.channelsPath(), { headers: getAuthHeader() });
