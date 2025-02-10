@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import filter from 'leo-profanity';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
