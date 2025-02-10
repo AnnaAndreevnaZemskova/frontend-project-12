@@ -9,11 +9,12 @@ import filter from 'leo-profanity';
 import routes from '../routes.js';
 import getAuthHeader from '../services/auth';
 import { addMessage, selectors as messagesSelectors } from '../services/messagesSlice.js';
-import { selectors as channelsSelectors } from '../services/channelsSlice.js';
+import { selectors as channelsSelectors, selectCurrentChannel } from '../services/channelsSlice.js';
 
-const selectCurrentChannel = createSelector(
+const selectCurrentChannelId = createSelector(
   [channelsSelectors.selectAll, (_, currentChannelId) => currentChannelId],
-  (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId),
+  // (channels, currentChannelId) => channels.find((channel) => channel.id === currentChannelId),
+  selectCurrentChannel,
 );
 
 const selectMessagesByChannel = createSelector(
@@ -27,7 +28,7 @@ const MessageBox = ({ currentChannelId }) => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.auth.username);
   const inputRef = useRef();
-  const currentChannel = useSelector((state) => selectCurrentChannel(state, currentChannelId));
+  const currentChannel = useSelector((state) => selectCurrentChannelId(state, currentChannelId));
   const { t } = useTranslation();
   const messages = useSelector((state) => selectMessagesByChannel(state, currentChannelId));
 
