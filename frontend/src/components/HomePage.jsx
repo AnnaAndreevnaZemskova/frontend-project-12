@@ -10,7 +10,7 @@ import MessageBox from './MessageBox.jsx';
 import routes from '../routes.js';
 import { selectors as channelsSelectors, addChannels } from '../services/channelsSlice.js';
 import { selectors as messagesSelectors, addMessages } from '../services/messagesSlice.js';
-import { setCurrentChannel } from '../services/uiSlice.js';
+import { setCurrentChannel, selectCurrentChannelId } from '../services/uiSlice.js';
 import getModal from './modals/index.js';
 import getAuthHeader from '../services/auth';
 
@@ -37,13 +37,13 @@ const HomePage = () => {
   const { t } = useTranslation();
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannel = useSelector((state) => state.ui.currentChannelId);
+  const currentChannel = useSelector(selectCurrentChannelId);
 
   const [currentChannelId, setCurrentChannelId] = useState(currentChannel);
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });
   const showModal = (type, item = null) => setModalInfo({ type, item });
-
+  
   useEffect(() => {
     const fetchChannels = async () => {
       const { data } = await axios.get(routes.channelsPath(), { headers: getAuthHeader() });

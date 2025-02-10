@@ -19,4 +19,5 @@ const uiSlice = createSlice({
 
 export const { setCurrentChannel } = uiSlice.actions;
 export const selectDefaultChannelId = (state) => state.ui.defaultChannelId;
+export const selectCurrentChannelId = (state) => state.ui.currentChannelId;
 export default uiSlice.reducer;
